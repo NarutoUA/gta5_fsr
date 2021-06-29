@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{c77c8364-2c6a-4ccc-8eda-f2cdebbd26e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wrappers">
+      <UniqueIdentifier>{150d81eb-1de6-4d0a-8563-e257d13847e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wrappers\d3d11">
+      <UniqueIdentifier>{89288c98-9f27-477e-a82f-b26e7a45e569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stdafx">
+      <UniqueIdentifier>{ecee89a8-f984-48ff-bf01-236a53ee7624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="helpers">
+      <UniqueIdentifier>{81a04e37-8f52-4ea9-8d69-c64848c1fb7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wrappers\dxgi">
+      <UniqueIdentifier>{08ec49c9-2d37-413a-aa39-cc80e94b2c55}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="shaders\defines.h">
+      <Filter>shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\fsr_easu_cs_d3d.h">
+      <Filter>shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\fsr_rcas_cs_d3d.h">
+      <Filter>shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="wrappers\wrappers.h">
+      <Filter>wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="wrappers\d3d11\ID3D11DeviceContextWrapper.h">
+      <Filter>wrappers\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>stdafx</Filter>
+    </ClInclude>
+    <ClInclude Include="CSuperResolutionMgr.h" />
+    <ClInclude Include="helpers\d3d11_helper.h">
+      <Filter>helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="wrappers\dxgi\IDXGISwapChainWrapper.h">
+      <Filter>wrappers\dxgi</Filter>
+    </ClInclude>
+    <ClInclude Include="helpers\ini_helper.h">
+      <Filter>helpers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <Filter>stdafx</Filter>
+    </ClCompile>
+    <ClCompile Include="wrappers\d3d11\ID3D11DeviceContextWrapper.cpp">
+      <Filter>wrappers\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="CSuperResolutionMgr.cpp" />
+    <ClCompile Include="wrappers\dxgi\IDXGISwapChainWrapper.cpp">
+      <Filter>wrappers\dxgi</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="exports.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="gta5_fsr.ini" />
+  </ItemGroup>
+</Project>

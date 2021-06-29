@@ -1,0 +1,6 @@
+[submodule "submodules/wil"]
+	path = submodules/wil
+	url = https://github.com/microsoft/wil.git
+[submodule "submodules/simpleini"]
+	path = submodules/simpleini
+	url = https://github.com/brofield/simpleini
