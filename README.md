@@ -21,4 +21,13 @@ This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Re
 ### Compatibility:
 | ENB | FiveM | RAGE.MP |
 | :---: | :-----: | :-------: |
-| ❓  | ❓  | ❓  |
+| ✔️<sup>1</sup>  | ❓  | ❓  |
+
+1. Rename this mod `d3d11.dll` to `d3d11_fsr.dll` and edit `enblocal.ini` file:  
+
+```
+[PROXY]
+EnableProxyLibrary=true
+InitProxyFunctions=true
+ProxyLibrary=d3d11_fsr.dll
+```
