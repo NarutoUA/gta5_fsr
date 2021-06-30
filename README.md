@@ -1,6 +1,8 @@
 # Grand Theft Auto V + FidelityFx Super Resolution 1.0
 This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Resolution 1.0](https://www.amd.com/en/technologies/radeon-software-fidelityfx-super-resolution)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/dlc9l4bitc5knyf5?svg=true)](https://ci.appveyor.com/project/NarutoUA/gta5-fsr)
+
 ## Original upscaler VS FidelityFx Super Resolution:
 [![youtube](http://img.youtube.com/vi/yN3tfoUUyos/0.jpg)](http://www.youtube.com/watch?v=yN3tfoUUyos "Original upscaler vs FidelifyFx Super Resolution")
 
