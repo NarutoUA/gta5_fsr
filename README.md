@@ -11,6 +11,9 @@ This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Re
 2. [Native VS FSR #1](https://screenshotcomparison.com/comparison/15427)
 3. [Native VS FSR #2](https://screenshotcomparison.com/comparison/15428)
 
+#### Other videos (benchmarks, reviews, comparisons):
+1. [GTA 5 4K | AMD FSR FidelityFX Super Resolution (MOD) ON/OFF | RTX 3090 | R7 5800X | Ultra Settings](https://www.youtube.com/watch?v=_wbAEirahwM) *by Jansn Benchmarks*
+
 ### Installation:
 1. Get the latest [release](https://github.com/NarutoUA/gta5_fsr/releases)
 2. Copy `d3d11.dll` and `gta5_fsr.ini` to Grand Theft Auto V root folder (e.g. \Steam\steamapps\common\Grand Theft Auto V)
