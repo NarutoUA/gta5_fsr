@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "IDXGISwapChainWrapper.h"
 
-IDXGISwapChainWrapper::IDXGISwapChainWrapper(IDXGISwapChain* pOrigSwapChain)
-    : m_pOrigSwapChain(pOrigSwapChain)
+IDXGISwapChainWrapper::IDXGISwapChainWrapper(IDXGISwapChain* pOrig)
+    : m_pOrig(pOrig)
 {
 }
 
 ULONG __stdcall IDXGISwapChainWrapper::Release(void)
 {
-    auto count = m_pOrigSwapChain->Release();
+    auto count = m_pOrig->Release();
 
     if (count == 0)
         delete this;
@@ -18,7 +18,7 @@ ULONG __stdcall IDXGISwapChainWrapper::Release(void)
 
 HRESULT __stdcall IDXGISwapChainWrapper::Present(UINT SyncInterval, UINT Flags)
 {
-    auto hr = m_pOrigSwapChain->Present(SyncInterval, Flags);
+    auto hr = m_pOrig->Present(SyncInterval, Flags);
 
     if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
     {

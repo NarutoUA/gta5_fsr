@@ -8,8 +8,10 @@ class CSuperResolutionMgr
 {
 public:
     static void Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext);
-    static bool RunSuperResolutionPass(wil::com_ptr_t<ID3D11ShaderResourceView> src, wil::com_ptr_t<ID3D11RenderTargetView> dst);
+    static bool RunSuperResolutionPass(wil::com_ptr_t<ID3D11ShaderResourceView> src, wil::com_ptr_t<ID3D11RenderTargetView> dst, bool fxaa);
     static void OnDeviceLost();
+
+    static void UpdateMSAA() { instance().m_bDetectMSAA = true; }
 
     ~CSuperResolutionMgr();
 
@@ -21,7 +23,7 @@ private:
     static CSuperResolutionMgr& instance();
 
     void InternalInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext);
-    bool InternalRunSuperResolutionPass(wil::com_ptr_t<ID3D11ShaderResourceView>&& src, wil::com_ptr_t<ID3D11RenderTargetView>&& dst);
+    bool InternalRunSuperResolutionPass(wil::com_ptr_t<ID3D11ShaderResourceView>&& src, wil::com_ptr_t<ID3D11RenderTargetView>&& dst, bool fxaa);
     void InternalOnDeviceLost();
 
     void ReadConfig();
@@ -31,6 +33,7 @@ private:
     void HandleInputKeys();
     void UpdateSharpness();
     void UpdateAutoSharpness(float ratio);
+    void DetectMSAA();
 
     std::pair<UINT, UINT> GetThreadGroupsXY(UINT width, UINT height);
 
@@ -55,9 +58,15 @@ private:
     wil::com_ptr_t<ID3D11UnorderedAccessView> m_pUavEASU;
     wil::com_ptr_t<ID3D11UnorderedAccessView> m_pUavRCAS;
     wil::com_ptr_t<ID3D11ShaderResourceView> m_pSrvRCAS;
+    wil::com_ptr_t<ID3D11Texture2D> m_pTexFXAA;
+    wil::com_ptr_t<ID3D11ShaderResourceView> m_pSrvFXAA;
+    wil::com_ptr_t<ID3D11RenderTargetView> m_pRtvFXAA;
 
     cb_easu_t m_cbEASU;
     cb_rcas_t m_cbRCAS;
-    
+
+    UINT m_MSAA = 0;
+    bool m_bDetectMSAA = false;
+
     std::pair<UINT, UINT> m_ThreadGroupsXY;
 };

@@ -49,6 +49,13 @@
     <ClInclude Include="helpers\ini_helper.h">
       <Filter>helpers</Filter>
     </ClInclude>
+    <ClInclude Include="gta5_defines.h" />
+    <ClInclude Include="helpers\debug_helper.h">
+      <Filter>helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="wrappers\d3d11\ID3D11DeviceWrapper.h">
+      <Filter>wrappers\d3d11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -61,6 +68,9 @@
     <ClCompile Include="CSuperResolutionMgr.cpp" />
     <ClCompile Include="wrappers\dxgi\IDXGISwapChainWrapper.cpp">
       <Filter>wrappers\dxgi</Filter>
+    </ClCompile>
+    <ClCompile Include="wrappers\d3d11\ID3D11DeviceWrapper.cpp">
+      <Filter>wrappers\d3d11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

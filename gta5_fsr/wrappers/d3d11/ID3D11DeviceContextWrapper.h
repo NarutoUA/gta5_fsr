@@ -106,7 +106,10 @@ public:
         m_pOrigDeviceContext->IASetPrimitiveTopology(Topology);
     }
 
-    virtual void __stdcall VSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView* const* ppShaderResourceViews) override;
+    virtual void __stdcall VSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView* const* ppShaderResourceViews) override
+    {
+        m_pOrigDeviceContext->VSSetShaderResources(StartSlot, NumViews, ppShaderResourceViews);
+    }
 
     virtual void __stdcall VSSetSamplers(UINT StartSlot, UINT NumSamplers, ID3D11SamplerState* const* ppSamplers) override
     {
@@ -469,5 +472,4 @@ private:
 
     UINT m_PSShaderResource_LastStartSlot;
     BOOL m_OMRenderTargets_Valid;
-    BOOL m_VSShaderResource_Valid;
 };

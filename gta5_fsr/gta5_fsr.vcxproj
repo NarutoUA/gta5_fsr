@@ -95,12 +95,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CSuperResolutionMgr.h" />
+    <ClInclude Include="gta5_defines.h" />
     <ClInclude Include="helpers\d3d11_helper.h" />
+    <ClInclude Include="helpers\debug_helper.h" />
     <ClInclude Include="helpers\ini_helper.h" />
     <ClInclude Include="shaders\defines.h" />
     <ClInclude Include="shaders\fsr_easu_cs_d3d.h" />
     <ClInclude Include="shaders\fsr_rcas_cs_d3d.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="wrappers\d3d11\ID3D11DeviceWrapper.h" />
     <ClInclude Include="wrappers\d3d11\ID3D11DeviceContextWrapper.h" />
     <ClInclude Include="wrappers\dxgi\IDXGISwapChainWrapper.h" />
     <ClInclude Include="wrappers\wrappers.h" />
@@ -112,6 +115,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="wrappers\d3d11\ID3D11DeviceWrapper.cpp" />
     <ClCompile Include="wrappers\d3d11\ID3D11DeviceContextWrapper.cpp" />
     <ClCompile Include="wrappers\dxgi\IDXGISwapChainWrapper.cpp" />
   </ItemGroup>

@@ -3,82 +3,82 @@
 class IDXGISwapChainWrapper : public IDXGISwapChain
 {
 public:
-    IDXGISwapChainWrapper(IDXGISwapChain* pOrigSwapChain);
+    IDXGISwapChainWrapper(IDXGISwapChain* pOrig);
 
     IDXGISwapChainWrapper(const IDXGISwapChainWrapper&) = delete;
     IDXGISwapChainWrapper& operator=(const IDXGISwapChainWrapper) = delete;
 
     virtual HRESULT __stdcall QueryInterface(REFIID riid, void** ppvObject) override
     {
-        return m_pOrigSwapChain->QueryInterface(riid, ppvObject);
+        return m_pOrig->QueryInterface(riid, ppvObject);
     }
     virtual ULONG __stdcall AddRef(void) override
     {
-        return m_pOrigSwapChain->AddRef();
+        return m_pOrig->AddRef();
     }
 
     virtual ULONG __stdcall Release(void) override;
 
     virtual HRESULT __stdcall SetPrivateData(REFGUID Name, UINT DataSize, const void* pData) override
     {
-        return m_pOrigSwapChain->SetPrivateData(Name, DataSize, pData);
+        return m_pOrig->SetPrivateData(Name, DataSize, pData);
     }
     virtual HRESULT __stdcall SetPrivateDataInterface(REFGUID Name, const IUnknown* pUnknown) override
     {
-        return m_pOrigSwapChain->SetPrivateDataInterface(Name, pUnknown);
+        return m_pOrig->SetPrivateDataInterface(Name, pUnknown);
     }
     virtual HRESULT __stdcall GetPrivateData(REFGUID Name, UINT* pDataSize, void* pData) override
     {
-        return m_pOrigSwapChain->GetPrivateData(Name, pDataSize, pData);
+        return m_pOrig->GetPrivateData(Name, pDataSize, pData);
     }
     virtual HRESULT __stdcall GetParent(REFIID riid, void** ppParent) override
     {
-        return m_pOrigSwapChain->GetParent(riid, ppParent);
+        return m_pOrig->GetParent(riid, ppParent);
     }
     virtual HRESULT __stdcall GetDevice(REFIID riid, void** ppDevice) override
     {
-        return m_pOrigSwapChain->GetDevice(riid, ppDevice);
+        return m_pOrig->GetDevice(riid, ppDevice);
     }
 
     virtual HRESULT __stdcall Present(UINT SyncInterval, UINT Flags) override;
 
     virtual HRESULT __stdcall GetBuffer(UINT Buffer, REFIID riid, void** ppSurface) override
     {
-        return m_pOrigSwapChain->GetBuffer(Buffer, riid, ppSurface);
+        return m_pOrig->GetBuffer(Buffer, riid, ppSurface);
     }
     virtual HRESULT __stdcall SetFullscreenState(BOOL Fullscreen, IDXGIOutput* pTarget) override
     {
-        return m_pOrigSwapChain->SetFullscreenState(Fullscreen, pTarget);
+        return m_pOrig->SetFullscreenState(Fullscreen, pTarget);
     }
     virtual HRESULT __stdcall GetFullscreenState(BOOL* pFullscreen, IDXGIOutput** ppTarget) override
     {
-        return m_pOrigSwapChain->GetFullscreenState(pFullscreen, ppTarget);
+        return m_pOrig->GetFullscreenState(pFullscreen, ppTarget);
     }
     virtual HRESULT __stdcall GetDesc(DXGI_SWAP_CHAIN_DESC* pDesc) override
     {
-        return m_pOrigSwapChain->GetDesc(pDesc);
+        return m_pOrig->GetDesc(pDesc);
     }
     virtual HRESULT __stdcall ResizeBuffers(UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags) override
     {
-        return m_pOrigSwapChain->ResizeBuffers(BufferCount, Width, Height, NewFormat, SwapChainFlags);
+        return m_pOrig->ResizeBuffers(BufferCount, Width, Height, NewFormat, SwapChainFlags);
     }
     virtual HRESULT __stdcall ResizeTarget(const DXGI_MODE_DESC* pNewTargetParameters) override
     {
-        return m_pOrigSwapChain->ResizeTarget(pNewTargetParameters);
+        return m_pOrig->ResizeTarget(pNewTargetParameters);
     }
     virtual HRESULT __stdcall GetContainingOutput(IDXGIOutput** ppOutput) override
     {
-        return m_pOrigSwapChain->GetContainingOutput(ppOutput);
+        return m_pOrig->GetContainingOutput(ppOutput);
     }
     virtual HRESULT __stdcall GetFrameStatistics(DXGI_FRAME_STATISTICS* pStats) override
     {
-        return m_pOrigSwapChain->GetFrameStatistics(pStats);
+        return m_pOrig->GetFrameStatistics(pStats);
     }
     virtual HRESULT __stdcall GetLastPresentCount(UINT* pLastPresentCount) override
     {
-        return m_pOrigSwapChain->GetLastPresentCount(pLastPresentCount);
+        return m_pOrig->GetLastPresentCount(pLastPresentCount);
     }
 
 private:
-    IDXGISwapChain* m_pOrigSwapChain;
+    IDXGISwapChain* m_pOrig;
 };

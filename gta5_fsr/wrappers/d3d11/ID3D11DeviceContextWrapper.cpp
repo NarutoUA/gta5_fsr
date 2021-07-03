@@ -8,7 +8,6 @@ ID3D11DeviceContextWrapper::ID3D11DeviceContextWrapper(ID3D11DeviceContext* pOri
     : m_pOrigDeviceContext(pOrigDeviceContext)
     , m_PSShaderResource_LastStartSlot(INVALID_START_SLOT)
     , m_OMRenderTargets_Valid(FALSE)
-    , m_VSShaderResource_Valid(FALSE)
 {
 
 }
@@ -25,7 +24,8 @@ ULONG __stdcall ID3D11DeviceContextWrapper::Release(void)
 
 void __stdcall ID3D11DeviceContextWrapper::PSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView* const* ppShaderResourceViews)
 {
-    if (NumViews == 1 && ppShaderResourceViews != nullptr)
+    if (NumViews == 1 && ppShaderResourceViews != nullptr
+        && (StartSlot == GTA5_CB_SLOT_POSTFX || StartSlot == GTA5_CB_SLOT_POSTFX_FXAA))
     {
         m_PSShaderResource_LastStartSlot = StartSlot;
     }
@@ -42,7 +42,7 @@ void __stdcall ID3D11DeviceContextWrapper::Draw(UINT VertexCount, UINT StartVert
 
     if (VertexCount == 3 && StartVertexLocation == 3
         && m_PSShaderResource_LastStartSlot != INVALID_START_SLOT
-        && m_OMRenderTargets_Valid && m_VSShaderResource_Valid)
+        && m_OMRenderTargets_Valid)
     {
         wil::com_ptr_t<ID3D11ShaderResourceView> src;
         m_pOrigDeviceContext->PSGetShaderResources(m_PSShaderResource_LastStartSlot, 1, src.addressof());
@@ -50,22 +50,15 @@ void __stdcall ID3D11DeviceContextWrapper::Draw(UINT VertexCount, UINT StartVert
         wil::com_ptr_t<ID3D11RenderTargetView> dst;
         m_pOrigDeviceContext->OMGetRenderTargets(1, dst.addressof(), nullptr);
 
-        if (CSuperResolutionMgr::RunSuperResolutionPass(src, dst))
+        if (CSuperResolutionMgr::RunSuperResolutionPass(src, dst, m_PSShaderResource_LastStartSlot == GTA5_CB_SLOT_POSTFX_FXAA))
             skip_orig_call = true;
     }
 
     m_PSShaderResource_LastStartSlot = INVALID_START_SLOT;
     m_OMRenderTargets_Valid = FALSE;
-    m_VSShaderResource_Valid = FALSE;
 
     if (skip_orig_call == false)
         m_pOrigDeviceContext->Draw(VertexCount, StartVertexLocation);
-}
-
-void __stdcall ID3D11DeviceContextWrapper::VSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView* const* ppShaderResourceViews)
-{
-    m_VSShaderResource_Valid = NumViews == 1 && ppShaderResourceViews != nullptr;
-    m_pOrigDeviceContext->VSSetShaderResources(StartSlot, NumViews, ppShaderResourceViews);
 }
 
 void __stdcall ID3D11DeviceContextWrapper::OMSetRenderTargets(UINT NumViews, ID3D11RenderTargetView* const* ppRenderTargetViews, ID3D11DepthStencilView* pDepthStencilView)
