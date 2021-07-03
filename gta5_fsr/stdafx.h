@@ -4,6 +4,7 @@
 #define NOMINMAX
 
 #include <filesystem>
+#include <array>
 #include <memory>
 #include <optional>
 #include <windows.h>
@@ -11,5 +12,9 @@
 
 #include <wil/resource.h>
 #include <wil/com.h>
+
+#include "gta5_defines.h"
+#include "helpers/debug_helper.h"
+#include "wrappers/wrappers.h"
 
 #include "CSuperResolutionMgr.h"

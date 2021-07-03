@@ -71,6 +71,24 @@ HRESULT CreateTextureUAV(ID3D11Device* pDevice, ID3D11Texture2D* pTexture, ID3D1
     return pDevice->CreateUnorderedAccessView(pTexture, &desc, ppUAVOut);
 }
 
+HRESULT CreateTextureRTV(ID3D11Device* pDevice, ID3D11Texture2D* pTexture, ID3D11RenderTargetView** ppRTVOut)
+{
+    if (pDevice == nullptr)
+        return E_FAIL;
+
+    D3D11_TEXTURE2D_DESC descTex;
+    ZeroMemory(&descTex, sizeof(descTex));
+    pTexture->GetDesc(&descTex);
+
+    D3D11_RENDER_TARGET_VIEW_DESC desc;
+    ZeroMemory(&desc, sizeof(desc));
+    desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+    desc.Format = descTex.Format;
+    desc.Texture2D.MipSlice = 0;
+
+    return pDevice->CreateRenderTargetView(pTexture, &desc, ppRTVOut);
+}
+
 HRESULT CreateSampler(ID3D11Device* pDevice, ID3D11SamplerState** ppSamplerOut)
 {
     if (pDevice == nullptr)
@@ -144,4 +162,52 @@ HRESULT RunComputeShader(ID3D11DeviceContext* pDeviceContext, ID3D11ComputeShade
     pDeviceContext->CSSetSamplers(0, 1, ppSSNULL);
 
     return S_OK;
+}
+
+template <class T>
+std::unique_ptr<T> ReadConstantBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11Buffer* pBuffer)
+{
+    if (pDevice == nullptr || pDeviceContext == nullptr || pBuffer == nullptr)
+        return nullptr;
+
+    D3D11_BUFFER_DESC desc;
+    pBuffer->GetDesc(&desc);
+
+    wil::com_ptr_t<ID3D11Buffer> pReadBuffer;
+    pReadBuffer.attach(pBuffer);
+    pReadBuffer->AddRef();
+
+    if ((desc.CPUAccessFlags & D3D11_CPU_ACCESS_READ) == 0)
+    {
+        desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+        desc.Usage = D3D11_USAGE_STAGING;
+        desc.BindFlags = 0;
+        desc.MiscFlags = 0;
+
+        ID3D11Buffer* pTmpBuffer = nullptr;
+        if (FAILED(pDevice->CreateBuffer(&desc, nullptr, &pTmpBuffer)))
+            return nullptr;
+
+        pReadBuffer.attach(pTmpBuffer);
+        pDeviceContext->CopyResource(pReadBuffer.get(), pBuffer);
+    }
+
+    D3D11_MAPPED_SUBRESOURCE resource;
+    if (SUCCEEDED(pDeviceContext->Map(pReadBuffer.get(), 0, D3D11_MAP_READ, 0, &resource)))
+    {
+        if (resource.RowPitch < sizeof(T))
+            return nullptr;
+
+        T* pData = new T();
+        memcpy(pData, resource.pData, sizeof(T));
+
+        std::unique_ptr<T> result;
+        result.reset(pData);
+
+        pDeviceContext->Unmap(pReadBuffer.get(), 0);
+
+        return result;
+    }
+
+    return nullptr;
 }

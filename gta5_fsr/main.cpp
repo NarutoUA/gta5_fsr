@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include <mutex>
 
-#include "wrappers/wrappers.h"
-
 wil::unique_hmodule g_hModule;
-BOOL g_bDebugDevice = FALSE;
+bool g_bPrintDebug = true;
 
 BOOL APIENTRY DllMain(HMODULE hModule,
     DWORD  ul_reason_for_call,
@@ -31,7 +29,7 @@ void LoadOrigModule()
         GetSystemDirectory(buf, MAX_PATH);
         g_hModule.reset(::LoadLibrary((std::filesystem::path(buf) / "d3d11.dll").c_str()));
         
-        OutputDebugStringA("GTA5_FSR: Loaded original d3d11.dll");
+        print_debug("GTA5_FSR: Loaded original d3d11.dll");
     });
 }
 
@@ -50,17 +48,8 @@ __declspec(dllexport) HRESULT WINAPI _D3D11CreateDevice(
     LoadOrigModule();
     auto proc = reinterpret_cast<decltype(_D3D11CreateDevice)*>(GetProcAddress(g_hModule.get(), "D3D11CreateDevice"));
 
-    if (g_bDebugDevice)
-        Flags |= D3D11_CREATE_DEVICE_DEBUG;
-
     auto result = proc(pAdapter, DriverType, Software, Flags, pFeatureLevels, FeatureLevels, SDKVersion, ppDevice, pFeatureLevel, ppImmediateContext);
-    OutputDebugStringA("GTA5_FSR: D3D11CreateDevice");
-
-    if (ppDevice && *ppDevice && ppImmediateContext && *ppImmediateContext)
-    {
-        CSuperResolutionMgr::Initialize(*ppDevice, *ppImmediateContext);
-        *ppImmediateContext = new ID3D11DeviceContextWrapper(*ppImmediateContext);
-    }
+    print_debug("GTA5_FSR: D3D11CreateDevice");
 
     return result;
 }
@@ -81,21 +70,24 @@ __declspec(dllexport) HRESULT WINAPI _D3D11CreateDeviceAndSwapChain(
 {
     LoadOrigModule();
     auto proc = reinterpret_cast<decltype(_D3D11CreateDeviceAndSwapChain)*>(GetProcAddress(g_hModule.get(), "D3D11CreateDeviceAndSwapChain"));
-    OutputDebugStringA("GTA5_FSR: D3D11CreateDeviceAndSwapChain");
-
-    if (g_bDebugDevice)
-        Flags |= D3D11_CREATE_DEVICE_DEBUG;
+    print_debug("GTA5_FSR: D3D11CreateDeviceAndSwapChain");
 
     auto result = proc(pAdapter, DriverType, Software, Flags, pFeatureLevels, FeatureLevels, SDKVersion, pSwapChainDesc, ppSwapChain, ppDevice, pFeatureLevel, ppImmediateContext);
 
     if (ppDevice && *ppDevice && ppImmediateContext && *ppImmediateContext)
     {
         CSuperResolutionMgr::Initialize(*ppDevice, *ppImmediateContext);
+
+        print_debug("GTA5_FSR: Wrapping ID3D11Device [d3d11]");
+        *ppDevice = new ID3D11DeviceWrapper(*ppDevice);
+
+        print_debug("GTA5_FSR: Wrapping ID3D11DeviceContext [d3d11]");
         *ppImmediateContext = new ID3D11DeviceContextWrapper(*ppImmediateContext);
     }
 
-    if (ppSwapChain && *ppSwapChain)
+    if (pSwapChainDesc && ppSwapChain && *ppSwapChain)
     {
+        print_debug("GTA5_FSR: Wrapping IDXGISwapChain [d3d11]");
         *ppSwapChain = new IDXGISwapChainWrapper(*ppSwapChain);
     }
 
