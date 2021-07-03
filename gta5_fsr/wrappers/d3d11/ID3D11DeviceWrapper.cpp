@@ -2,8 +2,6 @@
 
 #include "ID3D11DeviceWrapper.h"
 
-#include "../dxgi/IDXGIDeviceWrapper.h"
-
 ID3D11DeviceWrapper::ID3D11DeviceWrapper(ID3D11Device* pOrigDevice)
     : m_pOrig(pOrigDevice)
 {
