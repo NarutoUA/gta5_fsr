@@ -25,11 +25,11 @@ This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Re
 4. Check `gta5_fsr.ini` file if you need more control over mod settings
 
 ### Compatibility:
-| ENB | FiveM | RAGE.MP |
-| :---: | :-----: | :-------: |
-| ✔️<sup>1</sup>  | ❓  | ❓  |
+| ENB  | GTA:O | FiveM | RAGE.MP | ReShade |
+| :--: | :---: | :---: | :-----: | :-----: |
+| ✔️<sup>1</sup>  | ✔️<sup>2</sup> | ❓  | ❓  | ❓ |
 
-1. Rename this mod `d3d11.dll` to `d3d11_fsr.dll` and edit `enblocal.ini` file:  
+1. *ENB:* Rename this mod `d3d11.dll` to `d3d11_fsr.dll` and edit `enblocal.ini` file:  
 
 ```
 [PROXY]
@@ -37,3 +37,33 @@ EnableProxyLibrary=true
 InitProxyFunctions=true
 ProxyLibrary=d3d11_fsr.dll
 ```
+
+2. *GTA Online:* Check **GTA Online** section below for more details
+
+### Troubleshooting
+If mod doesn't work or you are not sure if it works:
+1. Open `gta5_fsr.ini` end set:
+```
+PrintDebug=true
+```
+2. Download and start [DebugView](https://docs.microsoft.com/en-us/sysinternals/downloads/debugview).
+3. Go to "Edit" -> "Filter/Highlight" and set "Include" to "GTA5_FSR"
+4. Start game. If mod works you should see messages like:
+
+```
+[20736] GTA5_FSR: Loaded original d3d11.dll
+[20736] GTA5_FSR: D3D11CreateDevice
+[20736] GTA5_FSR: D3D11CreateDeviceAndSwapChain
+[20736] GTA5_FSR: Reading config file...
+[20736] GTA5_FSR: Creating default resources...
+[20736] GTA5_FSR: Initialized
+[20736] GTA5_FSR: Updated some resources.
+[20736] GTA5_FSR: FSR PASS, FPS: 100, MSAA: 2, FXAA: 0
+[20736] GTA5_FSR: FSR PASS, FPS: 101, MSAA: 2, FXAA: 0
+[20736] GTA5_FSR: FSR PASS, FPS: 99, MSAA: 2, FXAA: 0
+```
+
+If you don't see those lines or you see lines like "GTA5_FSR: Failed to create..." then save log and attach it to new [issue](https://github.com/NarutoUA/gta5_fsr/issues). Additionally, include `settings.xml` (C:\Users\%username%\Documents\Rockstar Games\GTA V\settings.xml) and your PC configuration.
+
+### GTA Online
+In general, mod works in GTA Online. If you are worried about being banned... Well, I don't know how GTA Online anticheat works so I can't guarantee that. I tried my best to make it anticheat-friendly based on my knowledge how other anticheats work. This mod *doesn't* require DLL injection, it *doesn't* modify game files, it *doesn't* change ingame memory, setup hooks etc. People ask me to add this mod to ReShade because it is allowed in GTA:Online. First of all, it's impossible. ReShade doesn't work with frame scaling and custom resolutions AFAIK. Secondly, ReShade became allowed because it started disabling Depth Stencil Buffer access, which is widely used in WallHack cheats, if any internet activity is detected (i.e. you are playing online). This mod *doesn't* touch depth buffer at all. Anyway, use this mod in GTA Online at your own risk.
