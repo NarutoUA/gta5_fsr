@@ -27,7 +27,7 @@ This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Re
 ### Compatibility:
 | ENB  | GTA:O | FiveM | RAGE.MP | ReShade |
 | :--: | :---: | :---: | :-----: | :-----: |
-| ✔️<sup>1</sup>  | ✔️<sup>2</sup> | ❓  | ❓  | ❓ |
+| ✔️<sup>1</sup>  | ✔️<sup>2</sup> | ❌<sup>3</sup>  | ❓  | ❓ |
 
 1. *ENB:* Rename this mod `d3d11.dll` to `d3d11_fsr.dll` and edit `enblocal.ini` file:  
 
@@ -39,6 +39,7 @@ ProxyLibrary=d3d11_fsr.dll
 ```
 
 2. *GTA Online:* Check **GTA Online** section below for more details
+3. *FiveM*: Compatibility may be added later. If you interested in it leave your feedback [here](https://github.com/NarutoUA/gta5_fsr/issues/11)
 
 ### Troubleshooting
 If mod doesn't work or you are not sure if it works:
