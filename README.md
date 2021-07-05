@@ -8,8 +8,7 @@ This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Re
 
 ### ScreenshotComparison:
 1. [Original upscale VS FSR upscale](https://screenshotcomparison.com/comparison/15394)
-2. [Native VS FSR #1](https://screenshotcomparison.com/comparison/15427)
-3. [Native VS FSR #2](https://screenshotcomparison.com/comparison/15428)
+2. [Native VS FSR](https://screenshotcomparison.com/comparison/15428)
 
 #### Other videos (benchmarks, reviews, comparisons):
 1. [GTA 5 4K | AMD FSR FidelityFX Super Resolution (MOD) ON/OFF | RTX 3090 | R7 5800X | Ultra Settings](https://www.youtube.com/watch?v=_wbAEirahwM) *by Jansn Benchmarks*
@@ -25,21 +24,14 @@ This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Re
 4. Check `gta5_fsr.ini` file if you need more control over mod settings
 
 ### Compatibility:
-| ENB  | GTA:O | FiveM | RAGE.MP | ReShade |
-| :--: | :---: | :---: | :-----: | :-----: |
-| ✔️<sup>1</sup>  | ✔️<sup>2</sup> | ❌<sup>3</sup>  | ❓  | ❓ |
-
-1. *ENB:* Rename this mod `d3d11.dll` to `d3d11_fsr.dll` and edit `enblocal.ini` file:  
-
-```
-[PROXY]
-EnableProxyLibrary=true
-InitProxyFunctions=true
-ProxyLibrary=d3d11_fsr.dll
-```
-
-2. *GTA Online:* Check **GTA Online** section below for more details
-3. *FiveM*: Compatibility may be added later. If you interested in it leave your feedback [here](https://github.com/NarutoUA/gta5_fsr/issues/11)
+| **Name** | **Compatibility** | **Comment** |
+| :------- | :---------------: | :---------- |
+| ENB      | ✔️ | Rename this mod `d3d11.dll` to `d3d11_fsr.dll` and edit `enblocal.ini` file. Set `EnableProxyLibrary=true`,  `InitProxyFunctions=true` and `ProxyLibrary=d3d11_fsr.dll` |
+| GTA:O         | ✔️ | Check [**GTA Online**](#gta-online) section below for more details |
+| FiveM         | ❌ | [In Progress](https://github.com/NarutoUA/gta5_fsr/issues/11) |
+| RAGE.MP       | ❓  | *Not tested* |
+| ReShade       | ❓  | *Not tested* |
+| R.E.A.L. (VR) | ❌ | Check [this](https://github.com/NarutoUA/gta5_fsr/issues/16#issuecomment-874247378) |
 
 ### Troubleshooting
 If mod doesn't work or you are not sure if it works:
