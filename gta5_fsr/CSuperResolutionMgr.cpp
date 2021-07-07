@@ -1,12 +1,8 @@
 #include "stdafx.h"
 #include <numeric>
-#include <charconv>
 
 #include "CSuperResolutionMgr.h"
 
-#include "simpleini/SimpleIni.h"
-#include "helpers/d3d11_helper.h"
-#include "helpers/ini_helper.h"
 #include "shaders/fsr_easu_cs_d3d.h"
 #include "shaders/fsr_rcas_cs_d3d.h"
 
@@ -17,7 +13,7 @@ constexpr auto GTA5_FSR_CFG_SHARPNESS = "Sharpness";
 constexpr auto GTA5_FSR_CFG_KEY_TOGGLE_FSR = "KeyToggleFSR";
 constexpr auto GTA5_FSR_CFG_KEY_UPDATE_SHARPNESS = "KeyUpdateSharpness";
 constexpr auto GTA5_FSR_CFG_KEY_PRINT_DEBUG = "PrintDebug";
-constexpr auto GTA5_FSR_EPSILON = 0.001;
+constexpr auto GTA5_FSR_EPSILON = 0.01;
 
 CSuperResolutionMgr& CSuperResolutionMgr::instance()
 {
@@ -149,7 +145,10 @@ bool CSuperResolutionMgr::InternalRunSuperResolutionPass(wil::com_ptr_t<ID3D11Sh
 
     static ULONGLONG tick = 0;
     static auto fps = 0;
-    if (print_debug_timeout(tick, 1000, "GTA5_FSR: FSR PASS, FPS: %d, MSAA: %d, FXAA: %d", fps++, m_MSAA, fxaa))
+    if (print_debug_timeout(tick, 1000
+        , "GTA5_FSR: FSR PASS, FPS: %d, MSAA: %d, FXAA: %d, [%dx%d]->[%dx%d] (%f)"
+        , fps++, m_MSAA, fxaa, src_tex_desc.Width, src_tex_desc.Height, dst_tex_desc.Width, dst_tex_desc.Height, m_fSharpness)
+        )
         fps = 0;
 
     return true;
@@ -157,6 +156,7 @@ bool CSuperResolutionMgr::InternalRunSuperResolutionPass(wil::com_ptr_t<ID3D11Sh
 
 void CSuperResolutionMgr::InternalOnDeviceLost()
 {
+    print_debug("GTA5_FSR: Device lost");
     ReleaseResources();
 }
 

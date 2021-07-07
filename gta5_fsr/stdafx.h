@@ -2,6 +2,8 @@
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
+#define FSR_COMMON_LOG_PREFIX "GTA5_FSR: "
+#define FSR_COMMON_API_D3D11
 
 #include <filesystem>
 #include <array>
@@ -14,7 +16,7 @@
 #include <wil/com.h>
 
 #include "gta5_defines.h"
-#include "helpers/debug_helper.h"
+#include "helpers/helpers.h"
 #include "wrappers/wrappers.h"
 
 #include "CSuperResolutionMgr.h"

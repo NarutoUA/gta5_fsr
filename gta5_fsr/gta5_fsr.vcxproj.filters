@@ -21,15 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shaders\defines.h">
-      <Filter>shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="shaders\fsr_easu_cs_d3d.h">
-      <Filter>shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="shaders\fsr_rcas_cs_d3d.h">
-      <Filter>shaders</Filter>
-    </ClInclude>
     <ClInclude Include="wrappers\wrappers.h">
       <Filter>wrappers</Filter>
     </ClInclude>
@@ -40,21 +31,42 @@
       <Filter>stdafx</Filter>
     </ClInclude>
     <ClInclude Include="CSuperResolutionMgr.h" />
-    <ClInclude Include="helpers\d3d11_helper.h">
-      <Filter>helpers</Filter>
-    </ClInclude>
     <ClInclude Include="wrappers\dxgi\IDXGISwapChainWrapper.h">
       <Filter>wrappers\dxgi</Filter>
     </ClInclude>
-    <ClInclude Include="helpers\ini_helper.h">
-      <Filter>helpers</Filter>
-    </ClInclude>
     <ClInclude Include="gta5_defines.h" />
-    <ClInclude Include="helpers\debug_helper.h">
-      <Filter>helpers</Filter>
-    </ClInclude>
     <ClInclude Include="wrappers\d3d11\ID3D11DeviceWrapper.h">
       <Filter>wrappers\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="wrappers\dxgi\IDXGIAdapterWrapper.h">
+      <Filter>wrappers\dxgi</Filter>
+    </ClInclude>
+    <ClInclude Include="wrappers\dxgi\IDXGIDeviceWrapper.h">
+      <Filter>wrappers\dxgi</Filter>
+    </ClInclude>
+    <ClInclude Include="wrappers\dxgi\IDXGIFactoryWrapper.h">
+      <Filter>wrappers\dxgi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fsr_common\shaders\defines.h">
+      <Filter>shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fsr_common\shaders\fsr_easu_cs_d3d.h">
+      <Filter>shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fsr_common\shaders\fsr_rcas_cs_d3d.h">
+      <Filter>shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fsr_common\helpers\d3d11_helper.h">
+      <Filter>helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fsr_common\helpers\debug_helper.h">
+      <Filter>helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fsr_common\helpers\helpers.h">
+      <Filter>helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fsr_common\helpers\ini_helper.h">
+      <Filter>helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +83,15 @@
     </ClCompile>
     <ClCompile Include="wrappers\d3d11\ID3D11DeviceWrapper.cpp">
       <Filter>wrappers\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="wrappers\dxgi\IDXGIAdapterWrapper.cpp">
+      <Filter>wrappers\dxgi</Filter>
+    </ClCompile>
+    <ClCompile Include="wrappers\dxgi\IDXGIDeviceWrapper.cpp">
+      <Filter>wrappers\dxgi</Filter>
+    </ClCompile>
+    <ClCompile Include="wrappers\dxgi\IDXGIFactoryWrapper.cpp">
+      <Filter>wrappers\dxgi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

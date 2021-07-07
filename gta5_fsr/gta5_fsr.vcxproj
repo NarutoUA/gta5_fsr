@@ -62,7 +62,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)submodules/wil/include;$(SolutionDir)submodules;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)fsr_common;$(SolutionDir)fsr_common/submodules/wil/include;$(SolutionDir)fsr_common/submodules;$(ProjectDir)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -70,6 +70,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
+      <AdditionalDependencies>dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -81,7 +82,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)submodules/wil/include;$(SolutionDir)submodules;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)fsr_common;$(SolutionDir)fsr_common/submodules/wil/include;$(SolutionDir)fsr_common/submodules;$(ProjectDir)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
@@ -91,20 +92,25 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
+      <AdditionalDependencies>dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\fsr_common\helpers\d3d11_helper.h" />
+    <ClInclude Include="..\fsr_common\helpers\debug_helper.h" />
+    <ClInclude Include="..\fsr_common\helpers\helpers.h" />
+    <ClInclude Include="..\fsr_common\helpers\ini_helper.h" />
+    <ClInclude Include="..\fsr_common\shaders\defines.h" />
+    <ClInclude Include="..\fsr_common\shaders\fsr_easu_cs_d3d.h" />
+    <ClInclude Include="..\fsr_common\shaders\fsr_rcas_cs_d3d.h" />
     <ClInclude Include="CSuperResolutionMgr.h" />
     <ClInclude Include="gta5_defines.h" />
-    <ClInclude Include="helpers\d3d11_helper.h" />
-    <ClInclude Include="helpers\debug_helper.h" />
-    <ClInclude Include="helpers\ini_helper.h" />
-    <ClInclude Include="shaders\defines.h" />
-    <ClInclude Include="shaders\fsr_easu_cs_d3d.h" />
-    <ClInclude Include="shaders\fsr_rcas_cs_d3d.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="wrappers\d3d11\ID3D11DeviceWrapper.h" />
     <ClInclude Include="wrappers\d3d11\ID3D11DeviceContextWrapper.h" />
+    <ClInclude Include="wrappers\dxgi\IDXGIAdapterWrapper.h" />
+    <ClInclude Include="wrappers\dxgi\IDXGIDeviceWrapper.h" />
+    <ClInclude Include="wrappers\dxgi\IDXGIFactoryWrapper.h" />
     <ClInclude Include="wrappers\dxgi\IDXGISwapChainWrapper.h" />
     <ClInclude Include="wrappers\wrappers.h" />
   </ItemGroup>
@@ -117,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="wrappers\d3d11\ID3D11DeviceWrapper.cpp" />
     <ClCompile Include="wrappers\d3d11\ID3D11DeviceContextWrapper.cpp" />
+    <ClCompile Include="wrappers\dxgi\IDXGIAdapterWrapper.cpp" />
+    <ClCompile Include="wrappers\dxgi\IDXGIDeviceWrapper.cpp" />
+    <ClCompile Include="wrappers\dxgi\IDXGIFactoryWrapper.cpp" />
     <ClCompile Include="wrappers\dxgi\IDXGISwapChainWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
