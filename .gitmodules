@@ -1,6 +1,3 @@
-[submodule "submodules/wil"]
-	path = submodules/wil
-	url = https://github.com/microsoft/wil.git
-[submodule "submodules/simpleini"]
-	path = submodules/simpleini
-	url = https://github.com/brofield/simpleini
+[submodule "fsr_common"]
+	path = fsr_common
+	url = https://github.com/NarutoUA/fsr_common.git

@@ -5,10 +5,7 @@ class ID3D11DeviceWrapper : public ID3D11Device
 public:
     ID3D11DeviceWrapper(ID3D11Device* pOrigDevice);
 
-    virtual HRESULT __stdcall QueryInterface(REFIID riid, void** ppvObject) override
-    {
-        return m_pOrig->QueryInterface(riid, ppvObject);
-    }
+    virtual HRESULT __stdcall QueryInterface(REFIID riid, void** ppvObject) override;
 
     virtual ULONG __stdcall AddRef(void) override
     {

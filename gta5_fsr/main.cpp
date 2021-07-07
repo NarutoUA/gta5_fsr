@@ -1,8 +1,18 @@
 #include "stdafx.h"
 #include <mutex>
+#include <VersionHelpers.h>
 
 wil::unique_hmodule g_hModule;
 bool g_bPrintDebug = true;
+bool g_bFiveM = false;
+bool g_bWrapFiveMSwapChain = false;
+
+void DetectFiveM()
+{
+    char path[MAX_PATH] = { 0 };
+    GetModuleFileNameA(nullptr, path, MAX_PATH);
+    g_bFiveM = strstr(path, "FiveM") != nullptr;
+}
 
 BOOL APIENTRY DllMain(HMODULE hModule,
     DWORD  ul_reason_for_call,
@@ -12,6 +22,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
+        DetectFiveM();
+        break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
@@ -51,6 +63,19 @@ __declspec(dllexport) HRESULT WINAPI _D3D11CreateDevice(
     auto result = proc(pAdapter, DriverType, Software, Flags, pFeatureLevels, FeatureLevels, SDKVersion, ppDevice, pFeatureLevel, ppImmediateContext);
     print_debug("GTA5_FSR: D3D11CreateDevice");
 
+    if (g_bFiveM && IsWindows10OrGreater() && ppDevice && *ppDevice && ppImmediateContext && *ppImmediateContext)
+    {
+        g_bWrapFiveMSwapChain = true;
+
+        CSuperResolutionMgr::Initialize(*ppDevice, *ppImmediateContext);
+
+        print_debug("GTA5_FSR: Wrapping ID3D11Device [d3d11-fivem]");
+        *ppDevice = new ID3D11DeviceWrapper(*ppDevice);
+
+        print_debug("GTA5_FSR: Wrapping ID3D11DeviceContext [d3d11-fivem]");
+        *ppImmediateContext = new ID3D11DeviceContextWrapper(*ppImmediateContext);
+    }
+
     return result;
 }
 
@@ -85,7 +110,7 @@ __declspec(dllexport) HRESULT WINAPI _D3D11CreateDeviceAndSwapChain(
         *ppImmediateContext = new ID3D11DeviceContextWrapper(*ppImmediateContext);
     }
 
-    if (pSwapChainDesc && ppSwapChain && *ppSwapChain)
+    if (ppSwapChain && *ppSwapChain)
     {
         print_debug("GTA5_FSR: Wrapping IDXGISwapChain [d3d11]");
         *ppSwapChain = new IDXGISwapChainWrapper(*ppSwapChain);

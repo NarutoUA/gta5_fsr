@@ -1,21 +1,19 @@
 #pragma once
 
-class IDXGISwapChainWrapper : public IDXGISwapChain
+#include <dxgi1_2.h>
+
+class IDXGISwapChainWrapper : public IDXGISwapChain1
 {
 public:
     IDXGISwapChainWrapper(IDXGISwapChain* pOrig);
+    IDXGISwapChainWrapper(IDXGISwapChain1* POrig1);
 
     IDXGISwapChainWrapper(const IDXGISwapChainWrapper&) = delete;
     IDXGISwapChainWrapper& operator=(const IDXGISwapChainWrapper) = delete;
 
-    virtual HRESULT __stdcall QueryInterface(REFIID riid, void** ppvObject) override
-    {
-        return m_pOrig->QueryInterface(riid, ppvObject);
-    }
-    virtual ULONG __stdcall AddRef(void) override
-    {
-        return m_pOrig->AddRef();
-    }
+    virtual HRESULT __stdcall QueryInterface(REFIID riid, void** ppvObject) override;
+
+    virtual ULONG __stdcall AddRef(void) override;
 
     virtual ULONG __stdcall Release(void) override;
 
@@ -46,10 +44,12 @@ public:
     {
         return m_pOrig->GetBuffer(Buffer, riid, ppSurface);
     }
+
     virtual HRESULT __stdcall SetFullscreenState(BOOL Fullscreen, IDXGIOutput* pTarget) override
     {
         return m_pOrig->SetFullscreenState(Fullscreen, pTarget);
     }
+
     virtual HRESULT __stdcall GetFullscreenState(BOOL* pFullscreen, IDXGIOutput** ppTarget) override
     {
         return m_pOrig->GetFullscreenState(pFullscreen, ppTarget);
@@ -79,6 +79,54 @@ public:
         return m_pOrig->GetLastPresentCount(pLastPresentCount);
     }
 
+    // IDXGISwapChain1
+    virtual HRESULT __stdcall GetDesc1(DXGI_SWAP_CHAIN_DESC1* pDesc) override
+    {
+        return m_pOrig1->GetDesc1(pDesc);
+    }
+    virtual HRESULT __stdcall GetFullscreenDesc(DXGI_SWAP_CHAIN_FULLSCREEN_DESC* pDesc) override
+    {
+        return m_pOrig1->GetFullscreenDesc(pDesc);
+    }
+    virtual HRESULT __stdcall GetHwnd(HWND* pHwnd) override
+    {
+        return m_pOrig1->GetHwnd(pHwnd);
+    }
+    virtual HRESULT __stdcall GetCoreWindow(REFIID refiid, void** ppUnk) override
+    {
+        return m_pOrig1->GetCoreWindow(refiid, ppUnk);
+    }
+
+    virtual HRESULT __stdcall Present1(UINT SyncInterval, UINT PresentFlags, const DXGI_PRESENT_PARAMETERS* pPresentParameters) override;
+
+    virtual BOOL __stdcall IsTemporaryMonoSupported(void) override
+    {
+        return m_pOrig1->IsTemporaryMonoSupported();
+    }
+    virtual HRESULT __stdcall GetRestrictToOutput(IDXGIOutput** ppRestrictToOutput) override
+    {
+        return m_pOrig1->GetRestrictToOutput(ppRestrictToOutput);
+    }
+    virtual HRESULT __stdcall SetBackgroundColor(const DXGI_RGBA* pColor) override
+    {
+        return m_pOrig1->SetBackgroundColor(pColor);
+    }
+    virtual HRESULT __stdcall GetBackgroundColor(DXGI_RGBA* pColor) override
+    {
+        return m_pOrig1->GetBackgroundColor(pColor);
+    }
+    virtual HRESULT __stdcall SetRotation(DXGI_MODE_ROTATION Rotation) override
+    {
+        return m_pOrig1->SetRotation(Rotation);
+    }
+    virtual HRESULT __stdcall GetRotation(DXGI_MODE_ROTATION* pRotation) override
+    {
+        return m_pOrig1->GetRotation(pRotation);
+    }
+
 private:
-    IDXGISwapChain* m_pOrig;
+    IUnknown* m_pMainOrig;
+    wil::com_ptr_t<IDXGISwapChain> m_pOrig;
+    wil::com_ptr_t<IDXGISwapChain1> m_pOrig1;
+    long m_RefCount;
 };
