@@ -7,8 +7,9 @@ This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Re
 [![youtube](http://img.youtube.com/vi/yN3tfoUUyos/0.jpg)](http://www.youtube.com/watch?v=yN3tfoUUyos "Original upscaler vs FidelifyFx Super Resolution")
 
 ### ScreenshotComparison:
-1. [Original upscale VS FSR upscale](https://screenshotcomparison.com/comparison/15394)
-2. [Native VS FSR](https://screenshotcomparison.com/comparison/15428)
+1. [Original upscale VS FSR upscale](https://screenshotcomparison.com/comparison/15394) - *link is dead*
+2. [Native VS FSR #1](https://imgsli.com/NjAyODk)
+3. [Native VS FSR #2](https://imgsli.com/NjAyOTA)
 
 #### Other videos (benchmarks, reviews, comparisons):
 1. [GTA 5 4K | AMD FSR FidelityFX Super Resolution (MOD) ON/OFF | RTX 3090 | R7 5800X | Ultra Settings](https://www.youtube.com/watch?v=_wbAEirahwM) *by Jansn Benchmarks*
@@ -30,7 +31,7 @@ This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Re
 | ENB      | ✔️ | Rename this mod `d3d11.dll` to `d3d11_fsr.dll` and edit `enblocal.ini` file. Set `EnableProxyLibrary=true`,  `InitProxyFunctions=true` and `ProxyLibrary=d3d11_fsr.dll` |
 | GTA:O         | ✔️ | Check [**GTA Online**](#gta-online) section below for more details |
 | FiveM         | ✔️ | Change `Graphics -> Render Resolution` instead of `Advanved Graphics -> Frame scaling mode` |
-| RAGE.MP       | ❓  | *Not tested* |
+| RAGE.MP       | ✔️ | No issues found |
 | ReShade       | ❓  | *Not tested* |
 | R.E.A.L. (VR) | ❌ | Check [this](https://github.com/NarutoUA/gta5_fsr/issues/16#issuecomment-874247378) |
 
