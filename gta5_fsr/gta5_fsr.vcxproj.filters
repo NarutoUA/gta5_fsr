@@ -68,6 +68,7 @@
     <ClInclude Include="..\fsr_common\helpers\ini_helper.h">
       <Filter>helpers</Filter>
     </ClInclude>
+    <ClInclude Include="config.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

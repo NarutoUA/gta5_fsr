@@ -2,7 +2,7 @@
 
 #include "shaders/defines.h"
 
-constexpr auto GTA5_FSR_DEFAULT_SHARPNESS = 0.5f;
+inline constexpr auto GTA5_FSR_DEFAULT_SHARPNESS = 0.5f;
 
 class CSuperResolutionMgr
 {
@@ -26,7 +26,6 @@ private:
     bool InternalRunSuperResolutionPass(wil::com_ptr_t<ID3D11ShaderResourceView>&& src, wil::com_ptr_t<ID3D11RenderTargetView>&& dst, bool fxaa);
     void InternalOnDeviceLost();
 
-    void ReadConfig();
     void ReleaseResources();
     void CreateResources();
     bool UpdateResources(const D3D11_TEXTURE2D_DESC& src_desc, const D3D11_TEXTURE2D_DESC& dst_desc);
@@ -38,11 +37,7 @@ private:
     std::pair<UINT, UINT> GetThreadGroupsXY(UINT width, UINT height);
 
 private:
-    bool m_bUseSuperResolution = true;
-    bool m_bAutoSharpness = true;
     float m_fSharpness = GTA5_FSR_DEFAULT_SHARPNESS;
-    std::optional<int> m_keyToggleFSR;
-    std::optional<int> m_keyUpdateSharpness;
 
     bool m_bResourcesAvailable = false;
     ID3D11Device* m_pDevice = nullptr;

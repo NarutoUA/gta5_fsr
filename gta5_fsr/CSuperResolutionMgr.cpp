@@ -1,19 +1,12 @@
 #include "stdafx.h"
-#include <numeric>
 
 #include "CSuperResolutionMgr.h"
 
 #include "shaders/fsr_easu_cs_d3d.h"
 #include "shaders/fsr_rcas_cs_d3d.h"
 
-constexpr auto GTA5_FSR_CFG_FILENAME = "gta5_fsr.ini";
-constexpr auto GTA5_FSR_CFG_USE_FSR = "UseFidelityFxSuperResolution";
-constexpr auto GTA5_FSR_CFG_AUTO_SHARPNESS = "AutoSharpness";
-constexpr auto GTA5_FSR_CFG_SHARPNESS = "Sharpness";
-constexpr auto GTA5_FSR_CFG_KEY_TOGGLE_FSR = "KeyToggleFSR";
-constexpr auto GTA5_FSR_CFG_KEY_UPDATE_SHARPNESS = "KeyUpdateSharpness";
-constexpr auto GTA5_FSR_CFG_KEY_PRINT_DEBUG = "PrintDebug";
 constexpr auto GTA5_FSR_EPSILON = 0.01;
+extern gta5_fsr_cfg_t g_Cfg;
 
 CSuperResolutionMgr& CSuperResolutionMgr::instance()
 {
@@ -49,7 +42,6 @@ void CSuperResolutionMgr::InternalInitialize(ID3D11Device* pDevice, ID3D11Device
 
     ZeroMemory(&m_cbEASU, sizeof(m_cbEASU));
 
-    ReadConfig();
     CreateResources();
 
     print_debug("GTA5_FSR: Initialized");
@@ -59,7 +51,7 @@ bool CSuperResolutionMgr::InternalRunSuperResolutionPass(wil::com_ptr_t<ID3D11Sh
 {
     HandleInputKeys();
 
-    if (m_bUseSuperResolution == false || m_bResourcesAvailable == false || src == nullptr || dst == nullptr)
+    if (g_Cfg.UseFidelityFxSuperResolution == false || m_bResourcesAvailable == false || src == nullptr || dst == nullptr)
         return false;
 
     // Check if this is original upscale pass
@@ -95,8 +87,11 @@ bool CSuperResolutionMgr::InternalRunSuperResolutionPass(wil::com_ptr_t<ID3D11Sh
     auto dst_height = static_cast<float>(dst_tex_desc.Height);
     auto dst_ratio = dst_width / dst_height;
 
+    auto frame_scale = src_width / dst_width;
+
     if (src_tex_desc.Width >= dst_tex_desc.Width || src_tex_desc.Height >= dst_tex_desc.Height
-        || std::abs(src_ratio - dst_ratio) > GTA5_FSR_EPSILON)
+        || std::abs(src_ratio - dst_ratio) > GTA5_FSR_EPSILON
+        || frame_scale < (GTA5_MIN_FRAME_SCALE - GTA5_FSR_EPSILON))
         return false;
 
     DetectMSAA();
@@ -158,31 +153,6 @@ void CSuperResolutionMgr::InternalOnDeviceLost()
 {
     print_debug("GTA5_FSR: Device lost");
     ReleaseResources();
-}
-
-void CSuperResolutionMgr::ReadConfig()
-{
-    CSimpleIniA ini;
-    if (ini.LoadFile(GTA5_FSR_CFG_FILENAME) == SI_OK)
-    {
-        print_debug("GTA5_FSR: Reading config file...");
-
-        ini_read_bool(ini, "GLOBAL", GTA5_FSR_CFG_USE_FSR, m_bUseSuperResolution);
-        ini_read_bool(ini, "GLOBAL", GTA5_FSR_CFG_AUTO_SHARPNESS, m_bAutoSharpness);
-        
-        float sharpness;
-        if (ini_read_numeric(ini, "GLOBAL", GTA5_FSR_CFG_SHARPNESS, sharpness) && sharpness >= 0.f && sharpness <= 1.f)
-            m_fSharpness = sharpness;
-
-        int code;
-        if (ini_read_numeric(ini, "INPUT", GTA5_FSR_CFG_KEY_TOGGLE_FSR, code))
-            m_keyToggleFSR = code;
-
-        if (ini_read_numeric(ini, "INPUT", GTA5_FSR_CFG_KEY_UPDATE_SHARPNESS, code))
-            m_keyUpdateSharpness = code;
-
-        ini_read_bool(ini, "DEBUG", GTA5_FSR_CFG_KEY_PRINT_DEBUG, g_bPrintDebug);
-    }
 }
 
 void CSuperResolutionMgr::ReleaseResources()
@@ -254,6 +224,10 @@ bool CSuperResolutionMgr::UpdateResources(const D3D11_TEXTURE2D_DESC& src_desc, 
         || m_pBufEASU == nullptr || m_pTexEASU == nullptr || m_pTexRCAS == nullptr
         || m_pUavEASU == nullptr || m_pUavRCAS == nullptr || m_pSrvRCAS == nullptr)
     {
+        print_debug("GTA5_FSR: Updating resources... Src: [%dx%d]->[%dx%d], Dst: [%dx%d]->[%dx%d]"
+            , static_cast<int>(m_cbEASU.cTextureSize[0]), static_cast<int>(m_cbEASU.cTextureSize[1]), src_desc.Width, src_desc.Height
+            , static_cast<int>(m_cbEASU.cViewportSize[0]), static_cast<int>(m_cbEASU.cViewportSize[1]), dst_desc.Width, dst_desc.Height);
+
         m_cbEASU.cTextureSize = { src_width, src_height, 1.f, 1.f };
         m_cbEASU.cViewportSize = { dst_width, dst_height, 0.f, 0.f };
 
@@ -333,7 +307,7 @@ bool CSuperResolutionMgr::UpdateResources(const D3D11_TEXTURE2D_DESC& src_desc, 
 
         UpdateAutoSharpness(src_width / dst_width);
 
-        print_debug("GTA5_FSR: Updated some resources.");
+        print_debug("GTA5_FSR: Updated resources.");
     };
 
     return true;
@@ -352,12 +326,12 @@ std::pair<UINT, UINT> CSuperResolutionMgr::GetThreadGroupsXY(UINT width, UINT he
 
 void CSuperResolutionMgr::HandleInputKeys()
 {
-    if (m_keyToggleFSR.has_value() && (GetAsyncKeyState(m_keyToggleFSR.value()) & 0x1))
+    if (g_Cfg.KeyToggleFSR.has_value() && (GetAsyncKeyState(g_Cfg.KeyToggleFSR.value()) & 0x1))
     {
-        m_bUseSuperResolution ^= true;
-        m_bUseSuperResolution ? print_debug("GTA5_FSR: ON") : print_debug("GTA5_FSR: OFF");
+        g_Cfg.UseFidelityFxSuperResolution ^= true;
+        g_Cfg.UseFidelityFxSuperResolution ? print_debug("GTA5_FSR: ON") : print_debug("GTA5_FSR: OFF");
     }
-    else if (m_keyUpdateSharpness.has_value() && (GetAsyncKeyState(m_keyUpdateSharpness.value()) & 0x1))
+    else if (g_Cfg.KeyUpdateSharpness.has_value() && (GetAsyncKeyState(g_Cfg.KeyUpdateSharpness.value()) & 0x1))
     {
         CSimpleIniA ini;
         if (ini.LoadFile(GTA5_FSR_CFG_FILENAME) == SI_OK)
@@ -391,7 +365,7 @@ void CSuperResolutionMgr::UpdateSharpness()
 
 void CSuperResolutionMgr::UpdateAutoSharpness(float ratio)
 {
-    if (m_bAutoSharpness)
+    if (g_Cfg.AutoSharpness)
     {
         // Performance: 0.5x = 0.7
         // Balanced: 0.667x = 0.5
@@ -418,7 +392,17 @@ void CSuperResolutionMgr::DetectMSAA()
         auto data = ReadConstantBuffer<gta5_main_globals_cb_t>(m_pDevice, m_pDeviceContext, pBuf.get());
         if (data)
         {
-            m_MSAA = data->msaa;
+            switch (data->msaa)
+            {
+            case 0:
+            case 2:
+            case 4:
+            case 8:
+                m_MSAA = data->msaa;
+                break;
+            default:
+                m_MSAA = 0;
+            }
         }
 
         m_bDetectMSAA = false;
