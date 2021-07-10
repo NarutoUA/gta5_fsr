@@ -22,14 +22,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -103,6 +103,7 @@
     <ClInclude Include="..\fsr_common\shaders\defines.h" />
     <ClInclude Include="..\fsr_common\shaders\fsr_easu_cs_d3d.h" />
     <ClInclude Include="..\fsr_common\shaders\fsr_rcas_cs_d3d.h" />
+    <ClInclude Include="config.h" />
     <ClInclude Include="CSuperResolutionMgr.h" />
     <ClInclude Include="gta5_defines.h" />
     <ClInclude Include="stdafx.h" />

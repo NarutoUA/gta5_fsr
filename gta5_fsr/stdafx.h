@@ -9,12 +9,13 @@
 #include <array>
 #include <memory>
 #include <optional>
+#include <mutex>
 #include <windows.h>
-#include <d3d11.h>
 
 #include <wil/resource.h>
 #include <wil/com.h>
 
+#include "config.h"
 #include "gta5_defines.h"
 #include "helpers/helpers.h"
 #include "wrappers/wrappers.h"
