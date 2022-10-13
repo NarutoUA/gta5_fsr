@@ -3,6 +3,9 @@ This mod replaces original Grand Theft Auto V upscaler with [FidelityFx Super Re
 
 [![Build status](https://ci.appveyor.com/api/projects/status/dlc9l4bitc5knyf5?svg=true)](https://ci.appveyor.com/project/NarutoUA/gta5-fsr)
 
+## FSR 2.1?
+FSR 2.x supports DirectX 12 and Vulkan. GTA 5 uses DirectX 11/10
+
 ## Original upscaler VS FidelityFx Super Resolution:
 [![youtube](http://img.youtube.com/vi/yN3tfoUUyos/0.jpg)](http://www.youtube.com/watch?v=yN3tfoUUyos "Original upscaler vs FidelifyFx Super Resolution")
 
